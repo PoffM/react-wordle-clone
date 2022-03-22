@@ -32,7 +32,6 @@ export function useWordleState() {
   }
 
   function removeLastLetterFromGuess() {
-    console.log("bs");
     setWordleState((state) => ({
       ...state,
       currentGuess: state.currentGuess.slice(0, -1),

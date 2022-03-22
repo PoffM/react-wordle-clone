@@ -1,4 +1,4 @@
-import { AspectRatio, Box, HStack, VStack } from "@chakra-ui/react";
+import { AspectRatio, Box, Center, HStack, VStack } from "@chakra-ui/react";
 import { range } from "lodash";
 import { WordleState } from "../../hooks/useWordleState/useWordleState";
 
@@ -28,6 +28,8 @@ export function LetterGrid({ wordleState }: LetterGridProps) {
                     border="1px solid"
                     bg={isSubmitted ? "gray.700" : undefined}
                     userSelect="none"
+                    fontWeight="bold"
+                    fontSize="2.2rem"
                   >
                     {rowGuess?.charAt(colNum)}
                   </Box>
