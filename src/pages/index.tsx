@@ -1,12 +1,29 @@
 import { Box, Center, Flex } from "@chakra-ui/react";
+import { range } from "lodash";
 import type { NextPage } from "next";
 import Head from "next/head";
+import { useKey } from "react-use";
 import { LetterGrid } from "../components/LetterGrid/LetterGrid";
 import { WordleHeader } from "../components/WordleHeader/WordleHeader";
+import { useWordleState } from "../hooks/useWordleState/useWordleState";
+
+const ALPHABET = range(0, 26).map((i) => String.fromCharCode(i + 65));
 
 const Home: NextPage = () => {
-  const guesses = 6;
-  const wordLength = 5;
+  const {
+    wordleState,
+    addLetterToGuess,
+    removeLastLetterFromGuess,
+    submitGuess,
+  } = useWordleState();
+
+  // Key presses change the game state:
+  useKey(
+    (event) => ALPHABET.includes(event.key.toUpperCase()),
+    (event) => addLetterToGuess(event.key.toUpperCase().charCodeAt(0))
+  );
+  useKey("Backspace", removeLastLetterFromGuess);
+  useKey("Enter", submitGuess);
 
   return (
     <>
@@ -31,7 +48,7 @@ const Home: NextPage = () => {
           flexDirection="column"
         >
           <Center flex={1}>
-            <LetterGrid guesses={guesses} wordLength={wordLength} />
+            <LetterGrid wordleState={wordleState} />
           </Center>
           <Box h="13rem" bg="gray"></Box>
         </Flex>
