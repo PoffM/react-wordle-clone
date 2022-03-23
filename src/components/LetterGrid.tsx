@@ -7,7 +7,7 @@ export interface LetterGridProps {
 }
 
 export function LetterGrid({ wordleState }: LetterGridProps) {
-  const { maxGuesses, wordLength, currentGuess, submittedGuesses, hiddenWord } =
+  const { maxGuesses, wordLength, currentGuess, submittedGuesses, solution } =
     wordleState;
 
   return (
@@ -19,9 +19,9 @@ export function LetterGrid({ wordleState }: LetterGridProps) {
           ? currentGuess
           : submittedGuesses[rowNum];
 
-        const remainingLetters = range(0, hiddenWord.length)
-          .filter((idx) => rowGuess?.[idx] !== hiddenWord[idx])
-          .map((idx) => hiddenWord[idx]);
+        const remainingLetters = range(0, solution.length)
+          .filter((idx) => rowGuess?.[idx] !== solution[idx])
+          .map((idx) => solution[idx]);
 
         return (
           <HStack flex={1} width="100%" key={rowNum}>
@@ -31,7 +31,7 @@ export function LetterGrid({ wordleState }: LetterGridProps) {
                 boxLetter && remainingLetters.includes(boxLetter)
               );
               const letterIsInRightSpot = Boolean(
-                boxLetter && hiddenWord.charAt(colNum) === boxLetter
+                boxLetter && solution.charAt(colNum) === boxLetter
               );
 
               const bgColor = isSubmitted

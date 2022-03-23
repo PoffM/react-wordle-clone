@@ -3,7 +3,7 @@ import COMMON_WORDS from "../word-list/common-words.json";
 import UNCOMMON_WORDS from "../word-list/uncommon-words.json";
 
 export interface WordleState {
-  hiddenWord: string;
+  solution: string;
   maxGuesses: number;
   wordLength: number;
   submittedGuesses: string[];
@@ -47,7 +47,7 @@ export function useWordleState() {
       ];
 
       const newStatus =
-        state.currentGuess === state.hiddenWord
+        state.currentGuess === state.solution
           ? "WON"
           : newSubmittedGuesses.length >= state.maxGuesses
           ? "LOST"
@@ -62,8 +62,13 @@ export function useWordleState() {
     });
   }
 
+  function restart() {
+    setWordleState(getInitialState);
+  }
+
   return {
     wordleState,
+    restart,
     ...(wordleState.status === "PLAYING" && {
       addLetterToGuess,
       removeLastLetterFromGuess,
@@ -79,11 +84,12 @@ function getInitialState(): WordleState {
     ]?.toUpperCase();
 
   if (!randomWord) {
+    // Shouldn't happen:
     throw new Error("Random word selection failed.");
   }
 
   return {
-    hiddenWord: "TESTS",
+    solution: randomWord,
     maxGuesses: 6,
     wordLength: randomWord.length,
     submittedGuesses: [] as string[],
