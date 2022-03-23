@@ -1,4 +1,4 @@
-/**  */
+/** Common words that can be chosen as the game's hidden word. */
 export const COMMON_WORDS = [
   "cigar",
   "rebut",

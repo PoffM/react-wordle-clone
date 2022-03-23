@@ -1,23 +1,16 @@
 import { useState } from "react";
+import { COMMON_WORDS } from "../word-list/common-words";
 
 export interface WordleState {
+  hiddenWord: string;
   maxGuesses: number;
   wordLength: number;
   submittedGuesses: string[];
   currentGuess: string;
 }
 
-const initialState: WordleState = {
-  maxGuesses: 6,
-  wordLength: 5,
-  submittedGuesses: [] as string[],
-  currentGuess: "",
-};
-
 export function useWordleState() {
-  const [wordleState, setWordleState] = useState<WordleState>(
-    () => initialState
-  );
+  const [wordleState, setWordleState] = useState<WordleState>(getInitialState);
 
   function addLetterToGuess(charCode: number) {
     setWordleState((state) => {
@@ -51,5 +44,24 @@ export function useWordleState() {
     addLetterToGuess,
     removeLastLetterFromGuess,
     submitGuess,
+  };
+}
+
+function getInitialState(): WordleState {
+  const randomWord =
+    COMMON_WORDS[
+      Math.floor(Math.random() * COMMON_WORDS.length)
+    ]?.toUpperCase();
+
+  if (!randomWord) {
+    throw new Error("Random word selection failed.");
+  }
+
+  return {
+    hiddenWord: "TESTS",
+    maxGuesses: 6,
+    wordLength: randomWord.length,
+    submittedGuesses: [] as string[],
+    currentGuess: "",
   };
 }

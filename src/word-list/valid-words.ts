@@ -1,3 +1,4 @@
+/** Valid words allowed to be guessed. */
 export const VALID_WORDS = [
   "aahed",
   "aalii",
