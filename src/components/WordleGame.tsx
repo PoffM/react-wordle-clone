@@ -1,8 +1,8 @@
 import { Box, Center, Flex } from "@chakra-ui/react";
 import { range } from "lodash";
 import { useKey } from "react-use";
-import { useWordleState } from "../../hooks/useWordleState/useWordleState";
-import { LetterGrid } from "../LetterGrid/LetterGrid";
+import { useWordleState } from "../hooks/useWordleState";
+import { LetterGrid } from "./LetterGrid";
 
 const ALPHABET = range(0, 26).map((i) => String.fromCharCode(i + 65));
 

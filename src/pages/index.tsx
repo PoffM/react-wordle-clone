@@ -1,8 +1,8 @@
 import { Flex } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { WordleGame } from "../components/WordleGame/WordleGame";
-import { WordleHeader } from "../components/WordleHeader/WordleHeader";
+import { WordleGame } from "../components/WordleGame";
+import { WordleHeader } from "../components/WordleHeader";
 
 const Home: NextPage = () => {
   return (

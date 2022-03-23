@@ -1,6 +1,6 @@
-import { AspectRatio, Box, Center, HStack, VStack } from "@chakra-ui/react";
+import { AspectRatio, Box, HStack, VStack } from "@chakra-ui/react";
 import { range } from "lodash";
-import { WordleState } from "../../hooks/useWordleState/useWordleState";
+import { WordleState } from "../hooks/useWordleState";
 
 export interface LetterGridProps {
   wordleState: WordleState;
