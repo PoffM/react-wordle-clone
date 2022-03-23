@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { COMMON_WORDS } from "../word-list/common-words";
+import COMMON_WORDS from "../word-list/common-words.json";
+import UNCOMMON_WORDS from "../word-list/uncommon-words.json";
 
 export interface WordleState {
   hiddenWord: string;
@@ -7,7 +8,10 @@ export interface WordleState {
   wordLength: number;
   submittedGuesses: string[];
   currentGuess: string;
+  status: "PLAYING" | "WON" | "LOST";
 }
+
+const VALID_WORDS = [...COMMON_WORDS, ...UNCOMMON_WORDS];
 
 export function useWordleState() {
   const [wordleState, setWordleState] = useState<WordleState>(getInitialState);
@@ -32,18 +36,39 @@ export function useWordleState() {
   }
 
   function submitGuess() {
-    setWordleState((state) => ({
-      ...state,
-      submittedGuesses: [...state.submittedGuesses, state.currentGuess],
-      currentGuess: "",
-    }));
+    setWordleState((state) => {
+      if (!VALID_WORDS.includes(state.currentGuess)) {
+        return state;
+      }
+
+      const newSubmittedGuesses = [
+        ...state.submittedGuesses,
+        state.currentGuess,
+      ];
+
+      const newStatus =
+        state.currentGuess === state.hiddenWord
+          ? "WON"
+          : newSubmittedGuesses.length >= state.maxGuesses
+          ? "LOST"
+          : "PLAYING";
+
+      return {
+        ...state,
+        submittedGuesses: newSubmittedGuesses,
+        currentGuess: "",
+        status: newStatus,
+      };
+    });
   }
 
   return {
     wordleState,
-    addLetterToGuess,
-    removeLastLetterFromGuess,
-    submitGuess,
+    ...(wordleState.status === "PLAYING" && {
+      addLetterToGuess,
+      removeLastLetterFromGuess,
+      submitGuess,
+    }),
   };
 }
 
@@ -63,5 +88,6 @@ function getInitialState(): WordleState {
     wordLength: randomWord.length,
     submittedGuesses: [] as string[],
     currentGuess: "",
+    status: "PLAYING",
   };
 }

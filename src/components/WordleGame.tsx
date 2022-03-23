@@ -17,7 +17,7 @@ export function WordleGame() {
   // Key presses change the game state:
   useKey(
     (event) => ALPHABET.includes(event.key.toUpperCase()),
-    (event) => addLetterToGuess(event.key.toUpperCase().charCodeAt(0))
+    (event) => addLetterToGuess?.(event.key.toUpperCase().charCodeAt(0))
   );
   useKey("Backspace", removeLastLetterFromGuess);
   useKey("Enter", submitGuess);
