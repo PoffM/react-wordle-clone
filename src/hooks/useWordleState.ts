@@ -13,7 +13,11 @@ export interface WordleState {
 
 const VALID_WORDS = [...COMMON_WORDS, ...UNCOMMON_WORDS];
 
-export function useWordleState() {
+export interface WordleGameParams {
+  onGuessError?: (message: string) => void;
+}
+
+export function useWordleState({ onGuessError }: WordleGameParams) {
   const [wordleState, setWordleState] = useState<WordleState>(getInitialState);
 
   function addLetterToGuess(charCode: number) {
@@ -36,8 +40,15 @@ export function useWordleState() {
   }
 
   function submitGuess() {
+    let errorMsg = "";
+
     setWordleState((state) => {
+      if (state.currentGuess.length < state.solution.length) {
+        errorMsg = "Not enough letters.";
+        return state;
+      }
       if (!VALID_WORDS.includes(state.currentGuess)) {
+        errorMsg = "Word not in word list.";
         return state;
       }
 
@@ -60,6 +71,10 @@ export function useWordleState() {
         status: newStatus,
       };
     });
+
+    if (errorMsg) {
+      onGuessError?.(errorMsg);
+    }
   }
 
   function restart() {

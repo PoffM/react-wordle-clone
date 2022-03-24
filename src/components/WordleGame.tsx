@@ -5,6 +5,7 @@ import {
   Flex,
   Heading,
   Text,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { range } from "lodash";
@@ -17,13 +18,24 @@ const ALPHABET = range(0, 26).map((i) => String.fromCharCode(i + 65));
 
 /** Holds the game state and renders the game elements. */
 export function WordleGame() {
+  const toast = useToast({
+    duration: 2000,
+    position: "top",
+  });
+
   const {
     wordleState,
     addLetterToGuess,
     removeLastLetterFromGuess,
     submitGuess,
     restart,
-  } = useWordleState();
+  } = useWordleState({
+    onGuessError: (message) =>
+      toast({
+        description: message,
+        status: "warning",
+      }),
+  });
 
   // Key presses change the game state:
   useKey(

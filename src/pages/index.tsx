@@ -12,10 +12,16 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      {/* CSS hacks to get the vertical layout to work. */}
       <style>{`
         html, body, #__next {
           height: 100%;
           margin: 0;
+        }
+
+        /* Move the toasts (notifications) down so they don't cover the header. */
+        #chakra-toast-manager-top {
+          top: 10% !important;
         }
       `}</style>
       <Flex direction="column" h="100%">
