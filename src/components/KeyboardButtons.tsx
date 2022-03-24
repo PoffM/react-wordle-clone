@@ -1,4 +1,5 @@
-import { Button, HStack, Spacer, VStack } from "@chakra-ui/react";
+import { Box, Button, HStack, VStack } from "@chakra-ui/react";
+import { ComponentProps } from "react";
 
 export interface KeyboardButtonsProps {
   onLetterClick?: (charCode: number) => void;
@@ -17,7 +18,6 @@ export function KeyboardButtons({
     spacing,
     width: "100%",
     flex: 1,
-    alignItems: "stretch",
   };
 
   return (
@@ -28,22 +28,22 @@ export function KeyboardButtons({
         ))}
       </HStack>
       <HStack {...hStackProps}>
-        <Spacer flex={1.5} />
+        <Box flex={0.5} />
         {"ASDFGHJKL".split("").map((letter) => (
           <LetterButton letter={letter} onClick={onLetterClick} key={letter} />
         ))}
-        <Spacer flex={1.5} />
+        <Box flex={0.5} />
       </HStack>
       <HStack {...hStackProps}>
-        <Button height="100%" flex={3} onClick={onEnterClick}>
+        <KeyButton flex={1.65} onClick={onEnterClick}>
           ENTER
-        </Button>
+        </KeyButton>
         {"ZXCVBNM".split("").map((letter) => (
           <LetterButton letter={letter} onClick={onLetterClick} key={letter} />
         ))}
-        <Button height="100%" flex={3} onClick={onBackspaceClick}>
+        <KeyButton flex={1.65} onClick={onBackspaceClick}>
           BACK
-        </Button>
+        </KeyButton>
       </HStack>
     </VStack>
   );
@@ -56,13 +56,16 @@ interface LetterButtonProps {
 
 function LetterButton({ letter, onClick }: LetterButtonProps) {
   return (
-    <Button
-      height="100%"
+    <KeyButton
       key={letter}
       flex={1}
       onClick={() => onClick?.(letter.charCodeAt(0))}
     >
       {letter}
-    </Button>
+    </KeyButton>
   );
+}
+
+function KeyButton(props: ComponentProps<typeof Button>) {
+  return <Button height="100%" minW={0} p={0} {...props} />;
 }

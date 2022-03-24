@@ -45,7 +45,7 @@ export function WordleGame() {
       <Center flex={1}>
         <LetterGrid wordleState={wordleState} />
       </Center>
-      <Box h="13rem">
+      <Box h="12rem">
         {(wordleState.status === "WON" || wordleState.status === "LOST") && (
           <VStack>
             {wordleState.status === "LOST" && (
