@@ -73,6 +73,8 @@ export function WordleGame() {
         )}
         {wordleState.status === "PLAYING" && (
           <KeyboardButtons
+            submittedGuesses={wordleState.submittedGuesses}
+            solution={wordleState.solution}
             onLetterClick={addLetterToGuess}
             onBackspaceClick={removeLastLetterFromGuess}
             onEnterClick={submitGuess}
