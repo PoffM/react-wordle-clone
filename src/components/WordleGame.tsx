@@ -38,7 +38,7 @@ export function WordleGame() {
       as="main"
       alignSelf="center"
       width="100%"
-      maxW="25rem"
+      maxW="31rem"
       flex={1}
       flexDirection="column"
     >
@@ -54,6 +54,11 @@ export function WordleGame() {
                 <Text fontSize="3xl">{wordleState.solution}</Text>
               </Box>
             )}
+            {wordleState.status === "WON" && (
+              <Box textAlign="center">
+                <Text fontSize="3xl">WINNER!</Text>
+              </Box>
+            )}
             <Flex w="100%">
               <Button
                 flex={1}
@@ -66,7 +71,13 @@ export function WordleGame() {
             </Flex>
           </VStack>
         )}
-        {wordleState.status === "PLAYING" && <KeyboardButtons />}
+        {wordleState.status === "PLAYING" && (
+          <KeyboardButtons
+            onLetterClick={addLetterToGuess}
+            onBackspaceClick={removeLastLetterFromGuess}
+            onEnterClick={submitGuess}
+          />
+        )}
       </Box>
     </Flex>
   );

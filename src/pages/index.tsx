@@ -15,6 +15,7 @@ const Home: NextPage = () => {
       <style>{`
         html, body, #__next {
           height: 100%;
+          margin: 0;
         }
       `}</style>
       <Flex direction="column" h="100%">
