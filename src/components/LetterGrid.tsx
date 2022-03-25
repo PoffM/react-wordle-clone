@@ -61,6 +61,7 @@ function useLetterGridData({ wordleState }: LetterGridProps) {
         return { bgColor, letter };
       }),
       rowError,
+      isSubmitted,
     };
 
     return rowData;

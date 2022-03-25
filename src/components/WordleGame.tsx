@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Heading,
-  Text,
-  useToast,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Center, Flex, useToast } from "@chakra-ui/react";
 import { range } from "lodash";
 import { useEffect } from "react";
 import { useKey } from "react-use";
