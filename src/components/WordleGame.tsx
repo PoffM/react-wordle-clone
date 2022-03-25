@@ -14,6 +14,7 @@ import { useKey } from "react-use";
 import { useWordleState } from "../hooks/useWordleState";
 import { KeyboardButtons } from "./KeyboardButtons";
 import { LetterGrid } from "./LetterGrid";
+import { PostGameButtons } from "./PostGameButtons";
 
 const ALPHABET = range(0, 26).map((i) => String.fromCharCode(i + 65));
 
@@ -32,6 +33,7 @@ export function WordleGame() {
     restart,
   } = useWordleState();
 
+  // Show a toast if there is a guessing error:
   useEffect(() => {
     if (wordleState.currentGuessError) {
       toast({
@@ -63,29 +65,7 @@ export function WordleGame() {
       </Center>
       <Box h="12rem">
         {(wordleState.status === "WON" || wordleState.status === "LOST") && (
-          <VStack>
-            {wordleState.status === "LOST" && (
-              <Box textAlign="center">
-                <Heading size="sm">SOLUTION</Heading>
-                <Text fontSize="3xl">{wordleState.solution}</Text>
-              </Box>
-            )}
-            {wordleState.status === "WON" && (
-              <Box textAlign="center">
-                <Text fontSize="3xl">WINNER!</Text>
-              </Box>
-            )}
-            <Flex w="100%">
-              <Button
-                flex={1}
-                bg="green.600"
-                _hover={{ bg: "green.700" }}
-                onClick={restart}
-              >
-                Next Word
-              </Button>
-            </Flex>
-          </VStack>
+          <PostGameButtons onRestartClick={restart} wordleState={wordleState} />
         )}
         {wordleState.status === "PLAYING" && (
           <KeyboardButtons
