@@ -9,6 +9,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { range } from "lodash";
+import { useEffect } from "react";
 import { useKey } from "react-use";
 import { useWordleState } from "../hooks/useWordleState";
 import { KeyboardButtons } from "./KeyboardButtons";
@@ -29,13 +30,16 @@ export function WordleGame() {
     removeLastLetterFromGuess,
     submitGuess,
     restart,
-  } = useWordleState({
-    onGuessError: (message) =>
+  } = useWordleState();
+
+  useEffect(() => {
+    if (wordleState.currentGuessError) {
       toast({
-        description: message,
+        description: wordleState.currentGuessError,
         status: "warning",
-      }),
-  });
+      });
+    }
+  }, [wordleState.currentGuessError, toast]);
 
   // Key presses change the game state:
   useKey(

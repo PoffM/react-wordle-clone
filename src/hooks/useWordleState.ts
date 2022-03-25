@@ -8,16 +8,13 @@ export interface WordleState {
   wordLength: number;
   submittedGuesses: string[];
   currentGuess: string;
+  currentGuessError: string | null;
   status: "PLAYING" | "WON" | "LOST";
 }
 
 const VALID_WORDS = [...COMMON_WORDS, ...UNCOMMON_WORDS];
 
-export interface WordleGameParams {
-  onGuessError?: (message: string) => void;
-}
-
-export function useWordleState({ onGuessError }: WordleGameParams) {
+export function useWordleState() {
   const [wordleState, setWordleState] = useState<WordleState>(getInitialState);
 
   function addLetterToGuess(charCode: number) {
@@ -27,6 +24,7 @@ export function useWordleState({ onGuessError }: WordleGameParams) {
       ).slice(0, state.wordLength);
       return {
         ...state,
+        currentGuessError: null,
         currentGuess: newGuess,
       };
     });
@@ -35,21 +33,22 @@ export function useWordleState({ onGuessError }: WordleGameParams) {
   function removeLastLetterFromGuess() {
     setWordleState((state) => ({
       ...state,
+      currentGuessError: null,
       currentGuess: state.currentGuess.slice(0, -1),
     }));
   }
 
   function submitGuess() {
-    let errorMsg = "";
-
     setWordleState((state) => {
-      if (state.currentGuess.length < state.solution.length) {
-        errorMsg = "Not enough letters.";
-        return state;
-      }
-      if (!VALID_WORDS.includes(state.currentGuess)) {
-        errorMsg = "Word not in word list.";
-        return state;
+      const currentGuessError =
+        state.currentGuess.length < state.solution.length
+          ? "Not enough letters."
+          : !VALID_WORDS.includes(state.currentGuess)
+          ? "Word not in word list."
+          : null;
+
+      if (currentGuessError) {
+        return { ...state, currentGuessError };
       }
 
       const newSubmittedGuesses = [
@@ -71,10 +70,6 @@ export function useWordleState({ onGuessError }: WordleGameParams) {
         status: newStatus,
       };
     });
-
-    if (errorMsg) {
-      onGuessError?.(errorMsg);
-    }
   }
 
   function restart() {
@@ -109,6 +104,7 @@ function getInitialState(): WordleState {
     wordLength: randomWord.length,
     submittedGuesses: [] as string[],
     currentGuess: "",
+    currentGuessError: null,
     status: "PLAYING",
   };
 }
