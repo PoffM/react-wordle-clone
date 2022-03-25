@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useKey } from "react-use";
 import { useWordleState } from "../hooks/useWordleState";
 import { KeyboardButtons } from "./KeyboardButtons";
-import { LetterGrid } from "./LetterGrid";
+import { LetterGrid } from "./letter-grid/LetterGrid";
 import { PostGameButtons } from "./PostGameButtons";
 
 const ALPHABET = range(0, 26).map((i) => String.fromCharCode(i + 65));

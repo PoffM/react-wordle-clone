@@ -1,6 +1,6 @@
 import { VStack } from "@chakra-ui/react";
 import { range } from "lodash";
-import { WordleState } from "../hooks/useWordleState";
+import { WordleState } from "../../hooks/useWordleState";
 import { LetterGridRow, LetterGridRowProps } from "./LetterGridRow";
 
 export interface LetterGridProps {
