@@ -8,7 +8,7 @@ export interface WordleState {
   wordLength: number;
   submittedGuesses: string[];
   currentGuess: string;
-  currentGuessError: string | null;
+  currentGuessError: { message: string } | null;
   status: "PLAYING" | "WON" | "LOST";
 }
 
@@ -42,9 +42,9 @@ export function useWordleState() {
     setWordleState((state) => {
       const currentGuessError =
         state.currentGuess.length < state.solution.length
-          ? "Not enough letters."
+          ? { message: "Not enough letters." }
           : !VALID_WORDS.includes(state.currentGuess)
-          ? "Word not in word list."
+          ? { message: "Word not in word list." }
           : null;
 
       if (currentGuessError) {

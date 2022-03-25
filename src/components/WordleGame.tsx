@@ -35,7 +35,7 @@ export function WordleGame() {
   useEffect(() => {
     if (wordleState.currentGuessError) {
       toast({
-        description: wordleState.currentGuessError,
+        description: wordleState.currentGuessError.message,
         status: "warning",
       });
     }
