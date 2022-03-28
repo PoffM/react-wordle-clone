@@ -52,10 +52,10 @@ function useLetterGridData({ wordleState }: LetterGridProps) {
 
         const bgColor = isSubmitted
           ? letterIsInRightSpot
-            ? "green.600"
+            ? "correct"
             : letterIsInRemainingLetters
-            ? "yellow.500"
-            : "gray.700"
+            ? "misplaced"
+            : undefined
           : undefined;
 
         return { bgColor, letter };

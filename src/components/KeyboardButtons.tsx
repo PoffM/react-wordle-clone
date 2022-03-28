@@ -48,34 +48,18 @@ export function KeyboardButtons({
   );
 
   function letterButtonProps(letter: string) {
-    const buttonProps = correctLetters.has(letter)
-      ? {
-          bg: "green.600",
-          _hover: { bg: "green.700" },
-          _active: { bg: "green.800" },
-        }
+    const buttonColor = correctLetters.has(letter)
+      ? "correct"
       : misplacedLetters.has(letter)
-      ? {
-          bg: "yellow.500",
-          _hover: { bg: "yellow.600" },
-          _active: { bg: "yellow.700" },
-        }
+      ? "misplaced"
       : submittedLettersSet.has(letter)
-      ? {
-          bg: "gray.700",
-          _hover: { bg: "gray.800" },
-          _active: { bg: "gray.900" },
-        }
-      : {
-          bg: "gray.500",
-          _hover: { bg: "gray.600" },
-          _active: { bg: "gray.700" },
-        };
+      ? "usedLetter"
+      : "unusedLetter";
 
     return {
       letter,
       onClick: onLetterClick,
-      buttonProps,
+      buttonProps: colorProps(buttonColor),
     };
   }
 
@@ -130,5 +114,21 @@ function LetterButton({ letter, onClick, buttonProps }: LetterButtonProps) {
 
 /** A button on the clickable keyboard. */
 function KeyButton(props: ComponentProps<typeof Button>) {
-  return <Button height="100%" minW={0} p={0} {...props} />;
+  return (
+    <Button
+      height="100%"
+      minW={0}
+      p={0}
+      {...colorProps("unusedLetter")}
+      {...props}
+    />
+  );
+}
+
+function colorProps(color: string) {
+  return {
+    bg: `${color}`,
+    _hover: { bg: `${color}.hover` },
+    _active: { bg: `${color}.active` },
+  };
 }
