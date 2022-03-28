@@ -5,9 +5,10 @@ import { LetterGridRow, LetterGridRowProps } from "./LetterGridRow";
 
 export interface LetterGridProps {
   wordleState: WordleState;
+  onRowRevealed?: () => void;
 }
 
-export function LetterGrid({ wordleState }: LetterGridProps) {
+export function LetterGrid({ wordleState, onRowRevealed }: LetterGridProps) {
   const { rows } = useLetterGridData({ wordleState });
 
   return (
@@ -19,7 +20,11 @@ export function LetterGrid({ wordleState }: LetterGridProps) {
       key={wordleState.solution}
     >
       {rows.map((rowData, rowNum) => (
-        <LetterGridRow {...rowData} key={rowNum} />
+        <LetterGridRow
+          {...rowData}
+          onRowRevealed={onRowRevealed}
+          key={rowNum}
+        />
       ))}
     </VStack>
   );

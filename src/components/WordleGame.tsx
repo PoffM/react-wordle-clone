@@ -1,7 +1,6 @@
 import { Box, Center, Flex, useToast } from "@chakra-ui/react";
 import { range } from "lodash";
 import { useEffect } from "react";
-import { useKey } from "react-use";
 import { useWordleState } from "../hooks/useWordleState";
 import { KeyboardButtons } from "./KeyboardButtons";
 import { LetterGrid } from "./letter-grid/LetterGrid";
@@ -21,6 +20,7 @@ export function WordleGame() {
     addLetterToGuess,
     removeLastLetterFromGuess,
     submitGuess,
+    continueGame,
     restart,
   } = useWordleState();
 
@@ -35,12 +35,21 @@ export function WordleGame() {
   }, [wordleState.currentGuessError, toast]);
 
   // Key presses change the game state:
-  useKey(
-    (event) => ALPHABET.includes(event.key.toUpperCase()),
-    (event) => addLetterToGuess?.(event.key.toUpperCase().charCodeAt(0))
-  );
-  useKey("Backspace", removeLastLetterFromGuess);
-  useKey("Enter", submitGuess);
+  useEffect(() => {
+    function callGameFunction(event: KeyboardEvent) {
+      if (ALPHABET.includes(event.key.toUpperCase())) {
+        addLetterToGuess?.(event.key.toUpperCase().charCodeAt(0));
+      }
+      if (event.key === "Backspace") {
+        removeLastLetterFromGuess?.();
+      }
+      if (event.key === "Enter") {
+        submitGuess?.();
+      }
+    }
+    document.addEventListener("keydown", callGameFunction);
+    return () => document.removeEventListener("keydown", callGameFunction);
+  }, [addLetterToGuess, removeLastLetterFromGuess, submitGuess]);
 
   return (
     <Flex
@@ -52,13 +61,14 @@ export function WordleGame() {
       flexDirection="column"
     >
       <Center flex={1}>
-        <LetterGrid wordleState={wordleState} />
+        <LetterGrid wordleState={wordleState} onRowRevealed={continueGame} />
       </Center>
       <Box h="12rem">
         {(wordleState.status === "WON" || wordleState.status === "LOST") && (
           <PostGameButtons onRestartClick={restart} wordleState={wordleState} />
         )}
-        {wordleState.status === "PLAYING" && (
+        {(wordleState.status === "PLAYING" ||
+          wordleState.status === "WAITING") && (
           <KeyboardButtons
             submittedGuesses={wordleState.submittedGuesses}
             solution={wordleState.solution}

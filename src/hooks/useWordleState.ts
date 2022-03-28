@@ -9,7 +9,7 @@ export interface WordleState {
   submittedGuesses: string[];
   currentGuess: string;
   currentGuessError: { message: string } | null;
-  status: "PLAYING" | "WON" | "LOST";
+  status: "PLAYING" | "WON" | "LOST" | "WAITING";
 }
 
 const VALID_WORDS = [...COMMON_WORDS, ...UNCOMMON_WORDS];
@@ -56,12 +56,7 @@ export function useWordleState() {
         state.currentGuess,
       ];
 
-      const newStatus =
-        state.currentGuess === state.solution
-          ? "WON"
-          : newSubmittedGuesses.length >= state.maxGuesses
-          ? "LOST"
-          : "PLAYING";
+      const newStatus = "WAITING";
 
       return {
         ...state,
@@ -72,6 +67,21 @@ export function useWordleState() {
     });
   }
 
+  function continueGame() {
+    setWordleState((state) => {
+      const lastGuess = state.submittedGuesses.at(-1);
+
+      const newStatus =
+        lastGuess === state.solution
+          ? "WON"
+          : state.submittedGuesses.length >= state.maxGuesses
+          ? "LOST"
+          : "PLAYING";
+
+      return { ...state, status: newStatus };
+    });
+  }
+
   function restart() {
     setWordleState(getInitialState);
   }
@@ -79,6 +89,9 @@ export function useWordleState() {
   return {
     wordleState,
     restart,
+    ...(wordleState.status === "WAITING" && {
+      continueGame,
+    }),
     ...(wordleState.status === "PLAYING" && {
       addLetterToGuess,
       removeLastLetterFromGuess,

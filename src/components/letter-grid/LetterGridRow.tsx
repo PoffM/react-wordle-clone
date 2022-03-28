@@ -7,6 +7,7 @@ export interface LetterGridRowProps {
   columnData: LetterBoxData[];
   rowError: { message: string } | null;
   isSubmitted: boolean;
+  onRowRevealed?: () => void;
 }
 
 const MotionHStack = motion<ComponentProps<typeof HStack>>(HStack);
@@ -15,6 +16,7 @@ export function LetterGridRow({
   columnData,
   rowError,
   isSubmitted,
+  onRowRevealed,
 }: LetterGridRowProps) {
   // Shake horizontally when there is a new error:
   const animation = useAnimation();
@@ -29,14 +31,19 @@ export function LetterGridRow({
 
   return (
     <MotionHStack animate={animation} flex={1} width="100%" spacing="0.3rem">
-      {columnData.map((letterBoxData, letterPosition) => (
-        <LetterBox
-          {...letterBoxData}
-          isSubmitted={isSubmitted}
-          revealDelaySeconds={letterPosition * (1.5 / columnData.length)}
-          key={letterPosition}
-        />
-      ))}
+      {columnData.map((letterBoxData, letterPosition) => {
+        const isLast = letterPosition === columnData.length - 1;
+
+        return (
+          <LetterBox
+            {...letterBoxData}
+            isSubmitted={isSubmitted}
+            revealDelaySeconds={letterPosition * (1 / columnData.length)}
+            onRevealed={isLast ? onRowRevealed : undefined}
+            key={letterPosition}
+          />
+        );
+      })}
     </MotionHStack>
   );
 }

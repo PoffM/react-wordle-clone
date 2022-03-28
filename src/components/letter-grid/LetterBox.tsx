@@ -11,6 +11,7 @@ export interface LetterBoxData {
 export interface LetterBoxProps extends LetterBoxData {
   isSubmitted: boolean;
   revealDelaySeconds?: number;
+  onRevealed?: () => void;
 }
 
 const MotionBox = motion<BoxProps>(Box);
@@ -21,6 +22,7 @@ export function LetterBox({
   letter,
   isSubmitted,
   revealDelaySeconds,
+  onRevealed,
 }: LetterBoxProps) {
   const animation = useAnimation();
 
@@ -43,16 +45,17 @@ export function LetterBox({
       if (isSubmitted && !revealed) {
         await animation.start({
           rotateX: [0, -90],
-          transition: { delay: revealDelaySeconds, duration: 0.25 },
+          transition: { delay: revealDelaySeconds, duration: 0.2 },
         });
         setRevealed(true);
         await animation.start({
           rotateX: [-90, 0],
-          transition: { duration: 0.25 },
+          transition: { duration: 0.2 },
         });
+        onRevealed?.();
       }
     })();
-  }, [animation, isSubmitted, revealed, revealDelaySeconds]);
+  }, [animation, isSubmitted, revealed, revealDelaySeconds, onRevealed]);
 
   const bgColor = revealed
     ? letterIsInRightSpot
