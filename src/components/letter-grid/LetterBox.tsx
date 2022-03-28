@@ -20,8 +20,21 @@ export function LetterBox({
   isSubmitted,
   revealDelaySeconds,
 }: LetterBoxProps) {
-  // Flip animation to reveal the answer:
   const animation = useAnimation();
+
+  // Pop-in animation when the letter is entered:
+  useEffect(() => {
+    void (async () => {
+      if (letter) {
+        await animation.start({
+          scale: [0.8, 1.1, 1],
+          transition: { times: [0, 0.4, 1], duration: 0.1 },
+        });
+      }
+    })();
+  }, [animation, letter]);
+
+  // Flip animation to reveal the answer:
   const [revealed, setRevealed] = useState(false);
   useEffect(() => {
     void (async () => {
