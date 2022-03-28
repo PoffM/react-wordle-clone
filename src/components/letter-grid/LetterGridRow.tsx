@@ -28,7 +28,7 @@ export function LetterGridRow({
   }, [animation, rowError]);
 
   return (
-    <MotionHStack animate={animation} flex={1} width="100%">
+    <MotionHStack animate={animation} flex={1} width="100%" spacing="0.3rem">
       {columnData.map((letterBoxData, letterPosition) => (
         <LetterBox
           {...letterBoxData}

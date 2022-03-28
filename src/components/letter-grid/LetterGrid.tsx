@@ -11,7 +11,13 @@ export function LetterGrid({ wordleState }: LetterGridProps) {
   const { rows } = useLetterGridData({ wordleState });
 
   return (
-    <VStack width="100%" maxW="21rem">
+    <VStack
+      width="100%"
+      maxW="21rem"
+      spacing="0.3rem"
+      // Any component state should be lost when the solution is changed (e.g. for a new game):
+      key={wordleState.solution}
+    >
       {rows.map((rowData, rowNum) => (
         <LetterGridRow {...rowData} key={rowNum} />
       ))}
@@ -50,15 +56,7 @@ function useLetterGridData({ wordleState }: LetterGridProps) {
           letter && solution.charAt(colNum) === letter
         );
 
-        const bgColor = isSubmitted
-          ? letterIsInRightSpot
-            ? "correct"
-            : letterIsInRemainingLetters
-            ? "misplaced"
-            : undefined
-          : undefined;
-
-        return { bgColor, letter };
+        return { letter, letterIsInRightSpot, letterIsInRemainingLetters };
       }),
       rowError,
       isSubmitted,

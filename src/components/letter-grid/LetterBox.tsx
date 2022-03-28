@@ -3,7 +3,8 @@ import { motion, useAnimation } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export interface LetterBoxData {
-  bgColor?: string;
+  letterIsInRightSpot: boolean;
+  letterIsInRemainingLetters: boolean;
   letter?: string;
 }
 
@@ -15,7 +16,8 @@ export interface LetterBoxProps extends LetterBoxData {
 const MotionBox = motion<BoxProps>(Box);
 
 export function LetterBox({
-  bgColor,
+  letterIsInRightSpot,
+  letterIsInRemainingLetters,
   letter,
   isSubmitted,
   revealDelaySeconds,
@@ -52,11 +54,19 @@ export function LetterBox({
     })();
   }, [animation, isSubmitted, revealed, revealDelaySeconds]);
 
+  const bgColor = revealed
+    ? letterIsInRightSpot
+      ? "correct"
+      : letterIsInRemainingLetters
+      ? "misplaced"
+      : "usedLetter"
+    : undefined;
+
   return (
     <AspectRatio flex={1} ratio={1}>
       <MotionBox
         animate={animation}
-        border="1px solid"
+        border={revealed ? undefined : "2px"}
         bg={revealed ? bgColor : undefined}
         userSelect="none"
         fontWeight="bold"
