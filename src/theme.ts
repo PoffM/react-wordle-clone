@@ -1,4 +1,8 @@
 import { extendTheme } from "@chakra-ui/react";
+import { getColor } from "@chakra-ui/theme-tools";
+import { theme as defaultTheme } from "@chakra-ui/theme";
+
+const borderColor = getColor(defaultTheme, "whiteAlpha.400", "gray") as string;
 
 export const wordleTheme = extendTheme({
   styles: {
@@ -7,6 +11,10 @@ export const wordleTheme = extendTheme({
         bg: "blackAlpha.900",
       },
     },
+  },
+  borders: {
+    "1px": `1px solid ${borderColor}`,
+    "2px": `2px solid ${borderColor}`,
   },
   semanticTokens: {
     colors: {

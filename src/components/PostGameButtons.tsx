@@ -26,8 +26,8 @@ export function PostGameButtons({
       <Flex w="100%">
         <Button
           flex={1}
-          bg="green.600"
-          _hover={{ bg: "green.700" }}
+          bg="correct"
+          _hover={{ bg: "correct.hover" }}
           onClick={onRestartClick}
         >
           Next Word
