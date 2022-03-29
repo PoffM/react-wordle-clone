@@ -13,6 +13,7 @@ export function WordleGame() {
   const toast = useToast({
     duration: 2000,
     position: "top",
+    variant: "solid",
   });
 
   const {

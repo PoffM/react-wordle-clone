@@ -1,4 +1,12 @@
-import { Box, Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  LightMode,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { WordleState } from "../hooks/useWordleState";
 
 export interface PostGameButtonsProps {
@@ -24,14 +32,11 @@ export function PostGameButtons({
         </Box>
       )}
       <Flex w="100%">
-        <Button
-          flex={1}
-          bg="correct"
-          _hover={{ bg: "correct.hover" }}
-          onClick={onRestartClick}
-        >
-          Next Word
-        </Button>
+        <LightMode>
+          <Button flex={1} colorScheme="correct" onClick={onRestartClick}>
+            Next Word
+          </Button>
+        </LightMode>
       </Flex>
     </VStack>
   );
