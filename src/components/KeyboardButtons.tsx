@@ -1,4 +1,4 @@
-import { Box, Button, HStack, VStack } from "@chakra-ui/react";
+import { Box, Button, HStack, LightMode, VStack } from "@chakra-ui/react";
 import { flatMap } from "lodash";
 import { ComponentProps } from "react";
 
@@ -47,8 +47,8 @@ export function KeyboardButtons({
       .map((it) => it.letter)
   );
 
-  function letterButtonProps(letter: string) {
-    const buttonColor = correctLetters.has(letter)
+  function letterButtonProps(letter: string): LetterButtonProps {
+    const colorScheme = correctLetters.has(letter)
       ? "correct"
       : misplacedLetters.has(letter)
       ? "misplaced"
@@ -59,53 +59,63 @@ export function KeyboardButtons({
     return {
       letter,
       onClick: onLetterClick,
-      buttonProps: colorProps(buttonColor),
+      colorScheme,
     };
   }
 
   return (
-    <VStack h="100%" spacing={spacing}>
-      <HStack {...hStackProps}>
-        {"QWERTYUIOP".split("").map((letter) => (
-          <LetterButton {...letterButtonProps(letter)} key={letter} />
-        ))}
-      </HStack>
-      <HStack {...hStackProps}>
-        <Box flex={0.5} />
-        {"ASDFGHJKL".split("").map((letter) => (
-          <LetterButton {...letterButtonProps(letter)} key={letter} />
-        ))}
-        <Box flex={0.5} />
-      </HStack>
-      <HStack {...hStackProps}>
-        <KeyButton flex={1.65} onClick={onEnterClick}>
-          ENTER
-        </KeyButton>
-        {"ZXCVBNM".split("").map((letter) => (
-          <LetterButton {...letterButtonProps(letter)} key={letter} />
-        ))}
-        <KeyButton flex={1.65} onClick={onBackspaceClick}>
-          BACK
-        </KeyButton>
-      </HStack>
-    </VStack>
+    <LightMode>
+      <VStack h="100%" spacing={spacing} padding={spacing}>
+        <HStack {...hStackProps}>
+          {"QWERTYUIOP".split("").map((letter) => (
+            <LetterButton {...letterButtonProps(letter)} key={letter} />
+          ))}
+        </HStack>
+        <HStack {...hStackProps}>
+          <Box flex={0.5} />
+          {"ASDFGHJKL".split("").map((letter) => (
+            <LetterButton {...letterButtonProps(letter)} key={letter} />
+          ))}
+          <Box flex={0.5} />
+        </HStack>
+        <HStack {...hStackProps}>
+          <KeyButton
+            flex={1.65}
+            colorScheme="unusedLetter"
+            onClick={onEnterClick}
+          >
+            ENTER
+          </KeyButton>
+          {"ZXCVBNM".split("").map((letter) => (
+            <LetterButton {...letterButtonProps(letter)} key={letter} />
+          ))}
+          <KeyButton
+            flex={1.65}
+            colorScheme="unusedLetter"
+            onClick={onBackspaceClick}
+          >
+            BACK
+          </KeyButton>
+        </HStack>
+      </VStack>
+    </LightMode>
   );
 }
 
 interface LetterButtonProps {
   letter: string;
   onClick?: (charCode: number) => void;
-  buttonProps?: ComponentProps<typeof Button>;
+  colorScheme: string;
 }
 
 /** A letter button on the clickable keyboard. */
-function LetterButton({ letter, onClick, buttonProps }: LetterButtonProps) {
+function LetterButton({ letter, onClick, colorScheme }: LetterButtonProps) {
   return (
     <KeyButton
       key={letter}
       flex={1}
       onClick={() => onClick?.(letter.charCodeAt(0))}
-      {...buttonProps}
+      colorScheme={colorScheme}
     >
       {letter}
     </KeyButton>
@@ -119,16 +129,12 @@ function KeyButton(props: ComponentProps<typeof Button>) {
       height="100%"
       minW={0}
       p={0}
-      {...colorProps("unusedLetter")}
       {...props}
+      onClick={(e) => {
+        props.onClick?.(e);
+        // eslint-disable-next-line
+        (e.target as any)?.blur();
+      }}
     />
   );
-}
-
-function colorProps(color: string) {
-  return {
-    bg: `${color}`,
-    _hover: { bg: `${color}.hover` },
-    _active: { bg: `${color}.active` },
-  };
 }

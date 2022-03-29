@@ -59,10 +59,10 @@ export function LetterBox({
 
   const bgColor = revealed
     ? letterIsInRightSpot
-      ? "correct"
+      ? "correct.500"
       : letterIsInRemainingLetters
-      ? "misplaced"
-      : "usedLetter"
+      ? "misplaced.500"
+      : "usedLetter.500"
     : undefined;
 
   return (

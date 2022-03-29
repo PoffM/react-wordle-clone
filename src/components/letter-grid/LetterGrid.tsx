@@ -16,6 +16,7 @@ export function LetterGrid({ wordleState, onRowRevealed }: LetterGridProps) {
       width="100%"
       maxW="21rem"
       spacing="0.3rem"
+      margin="0.3rem"
       // Any component state should be lost when the solution is changed (e.g. for a new game):
       key={wordleState.solution}
     >
