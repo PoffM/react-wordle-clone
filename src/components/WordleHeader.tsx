@@ -1,11 +1,11 @@
-import { Box, Center, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 
 export function WordleHeader() {
   return (
-    <Box h="3rem" borderBottom="1px">
-      <Center>
-        <Heading>React Wordle Clone</Heading>
-      </Center>
-    </Box>
+    <Flex alignItems="center" h="3rem" borderBottom="1px">
+      <Box mx="auto">
+        <Heading size="lg">React Wordle Clone</Heading>
+      </Box>
+    </Flex>
   );
 }
