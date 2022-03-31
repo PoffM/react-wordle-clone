@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { MotionConfig } from "framer-motion";
 import { WordleGame } from "./WordleGame";
 
+/** Using test solution "HELLO" */
 function renderWordleGame() {
   const ui = render(<WordleGame solution="HELLO" />, {
     wrapper: ({ children }) => (
@@ -29,7 +30,6 @@ describe("WordleGame component", () => {
   });
 
   it("Plays through a game where you win.", async () => {
-    // Using test solution "HELLO":
     const { ui, user } = renderWordleGame();
 
     // Guess 1 with all wrong letters:
@@ -101,6 +101,42 @@ describe("WordleGame component", () => {
         "correct.500",
         "correct.500",
       ]);
+    }
+
+    // Post-win UI:
+    {
+      // The win text is shown:
+      expect(ui.getByText("WINNER!")).toBeTruthy();
+
+      // Click the restart button:
+      ui.getByRole("button", { name: "Next Word" }).click();
+      const letterBoxes = ui.getAllByTestId("letter-box");
+
+      // All the boxes are blank again:
+      expect(letterBoxes.filter((node) => node.innerText)).toEqual([]);
+    }
+  });
+
+  it("Plays through a game where you lose", async () => {
+    const { ui, user } = renderWordleGame();
+
+    // Guess with all wrong letters 6 times:
+    for (let i = 1; i <= 6; i++) {
+      await user.keyboard("{a}{m}{i}{s}{s}{Enter}");
+    }
+
+    // Post-lose UI:
+    {
+      // The solution text is shown:
+      expect(ui.getByText("SOLUTION")).toBeTruthy();
+      expect(ui.getByText("HELLO")).toBeTruthy();
+
+      // Click the restart button:
+      ui.getByRole("button", { name: "Next Word" }).click();
+      const letterBoxes = ui.getAllByTestId("letter-box");
+
+      // All the boxes are blank again:
+      expect(letterBoxes.filter((node) => node.innerText)).toEqual([]);
     }
   });
 });
