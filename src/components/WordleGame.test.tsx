@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MotionConfig } from "framer-motion";
 import { WordleGame } from "./WordleGame";
@@ -138,5 +138,71 @@ describe("WordleGame component", () => {
       // All the boxes are blank again:
       expect(letterBoxes.filter((node) => node.innerText)).toEqual([]);
     }
+  });
+
+  it("Enters the text using the clickable keyboard UI", async () => {
+    const { ui } = renderWordleGame();
+
+    // Guess "OLLIE" because it has a mix of different results:
+    ui.getByRole("button", { name: "O" }).click();
+    ui.getByRole("button", { name: "L" }).click();
+    ui.getByRole("button", { name: "L" }).click();
+    ui.getByRole("button", { name: "I" }).click();
+    ui.getByRole("button", { name: "E" }).click();
+    ui.getByRole("button", { name: /enter/i }).click();
+
+    const firstRowBoxes = ui.getAllByTestId("letter-box").slice(0, 5);
+
+    // The guess is rendered in the second row:
+    expect(firstRowBoxes.map((node) => node.textContent)).toEqual([
+      "O",
+      "L",
+      "L",
+      "I",
+      "E",
+    ]);
+
+    // The correct letter box colors are shown:
+    await waitFor(() => {
+      expect(
+        firstRowBoxes.map((node) => node.getAttribute("data-background-color"))
+      ).toEqual([
+        "misplaced.500", // O: misplaced
+        "misplaced.500", // First L: misplaced
+        "correct.500", // Second L: correct spot
+        "usedLetter.500", // I: Not in the solution
+        "misplaced.500", // E: misplaced
+      ]);
+    });
+  });
+
+  it("Shows a toast message when you enter an unknown word", async () => {
+    const { ui, user } = renderWordleGame();
+
+    await user.keyboard("{a}{s}{d}{f}{g}{Enter}");
+
+    expect(ui.getByText("Word not in word list.")).toBeTruthy();
+  });
+
+  it("Shows a toast message when you enter a word that's too short", async () => {
+    const { ui, user } = renderWordleGame();
+
+    await user.keyboard("{r}{e}{d}{Enter}");
+
+    expect(ui.getByText("Not enough letters.")).toBeTruthy();
+  });
+
+  it("Lets you remove a letter by pressing backspace", async () => {
+    const { ui, user } = renderWordleGame();
+
+    await user.keyboard("{r}{e}{d}{Backspace}");
+
+    // The guess is rendered in the first row:
+    const firstRowBoxes = ui.getAllByTestId("letter-box").slice(0, 3);
+    expect(firstRowBoxes.map((node) => node.textContent)).toEqual([
+      "R",
+      "E",
+      "",
+    ]);
   });
 });

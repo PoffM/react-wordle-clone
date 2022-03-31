@@ -106,20 +106,21 @@ export function useWordleState(params: WordleStateParams = {}) {
   };
 }
 
-function makeInitialState(solution?: string): WordleState {
-  const randomWord = (
-    solution ?? COMMON_WORDS[Math.floor(Math.random() * COMMON_WORDS.length)]
+function makeInitialState(solutionWord?: string): WordleState {
+  const solution = (
+    solutionWord ??
+    COMMON_WORDS[Math.floor(Math.random() * COMMON_WORDS.length)]
   )?.toUpperCase();
 
-  if (!randomWord) {
+  if (!solution) {
     // Shouldn't happen:
     throw new Error("Random word selection failed.");
   }
 
   return {
-    solution: randomWord,
+    solution,
     maxGuesses: 6,
-    wordLength: randomWord.length,
+    wordLength: solution.length,
     submittedGuesses: [] as string[],
     currentGuess: "",
     currentGuessError: null,
