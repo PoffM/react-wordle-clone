@@ -1,23 +1,10 @@
-import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { MotionConfig } from "framer-motion";
+import { waitFor } from "@testing-library/react";
+import { renderWithContext } from "../test-util/render-with-context";
 import { WordleGame } from "./WordleGame";
-
-/** Using test solution "HELLO" */
-function renderWordleGame() {
-  const ui = render(<WordleGame solution="HELLO" />, {
-    wrapper: ({ children }) => (
-      <MotionConfig reducedMotion="always">{children}</MotionConfig>
-    ),
-  });
-  const user = userEvent.setup();
-
-  return { ui, user };
-}
 
 describe("WordleGame component", () => {
   it("Renders the initial blank state.", () => {
-    const { ui } = renderWordleGame();
+    const { ui } = renderWithContext(<WordleGame solution="HELLO" />);
     const letterRows = ui.getAllByTestId("letter-grid-row");
     const letterBoxes = ui.getAllByTestId("letter-box");
 
@@ -30,7 +17,7 @@ describe("WordleGame component", () => {
   });
 
   it("Plays through a game where you win.", async () => {
-    const { ui, user } = renderWordleGame();
+    const { ui, user } = renderWithContext(<WordleGame solution="HELLO" />);
 
     // Guess 1 with all wrong letters:
     {
@@ -118,7 +105,7 @@ describe("WordleGame component", () => {
   });
 
   it("Plays through a game where you lose", async () => {
-    const { ui, user } = renderWordleGame();
+    const { ui, user } = renderWithContext(<WordleGame solution="HELLO" />);
 
     // Guess with all wrong letters 6 times:
     for (let i = 1; i <= 6; i++) {
@@ -141,7 +128,7 @@ describe("WordleGame component", () => {
   });
 
   it("Enters the text using the clickable keyboard UI", async () => {
-    const { ui } = renderWordleGame();
+    const { ui } = renderWithContext(<WordleGame solution="HELLO" />);
 
     // Guess "OLLIE" because it has a mix of different results:
     ui.getByRole("button", { name: "O" }).click();
@@ -177,7 +164,7 @@ describe("WordleGame component", () => {
   });
 
   it("Shows a toast message when you enter an unknown word", async () => {
-    const { ui, user } = renderWordleGame();
+    const { ui, user } = renderWithContext(<WordleGame solution="HELLO" />);
 
     await user.keyboard("{a}{s}{d}{f}{g}{Enter}");
 
@@ -185,7 +172,7 @@ describe("WordleGame component", () => {
   });
 
   it("Shows a toast message when you enter a word that's too short", async () => {
-    const { ui, user } = renderWordleGame();
+    const { ui, user } = renderWithContext(<WordleGame solution="HELLO" />);
 
     await user.keyboard("{r}{e}{d}{Enter}");
 
@@ -193,7 +180,7 @@ describe("WordleGame component", () => {
   });
 
   it("Lets you remove a letter by pressing backspace", async () => {
-    const { ui, user } = renderWordleGame();
+    const { ui, user } = renderWithContext(<WordleGame solution="HELLO" />);
 
     await user.keyboard("{r}{e}{d}{Backspace}");
 
