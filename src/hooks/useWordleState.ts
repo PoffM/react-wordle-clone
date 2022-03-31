@@ -14,8 +14,14 @@ export interface WordleState {
 
 const VALID_WORDS = [...COMMON_WORDS, ...UNCOMMON_WORDS];
 
-export function useWordleState() {
-  const [wordleState, setWordleState] = useState<WordleState>(getInitialState);
+export interface WordleStateParams {
+  solution?: string;
+}
+
+export function useWordleState(params: WordleStateParams = {}) {
+  const [wordleState, setWordleState] = useState<WordleState>(() =>
+    makeInitialState(params.solution)
+  );
 
   function addLetterToGuess(charCode: number) {
     setWordleState((state) => {
@@ -83,7 +89,7 @@ export function useWordleState() {
   }
 
   function restart() {
-    setWordleState(getInitialState);
+    setWordleState(() => makeInitialState());
   }
 
   return {
@@ -100,11 +106,10 @@ export function useWordleState() {
   };
 }
 
-function getInitialState(): WordleState {
-  const randomWord =
-    COMMON_WORDS[
-      Math.floor(Math.random() * COMMON_WORDS.length)
-    ]?.toUpperCase();
+function makeInitialState(solution?: string): WordleState {
+  const randomWord = (
+    solution ?? COMMON_WORDS[Math.floor(Math.random() * COMMON_WORDS.length)]
+  )?.toUpperCase();
 
   if (!randomWord) {
     // Shouldn't happen:

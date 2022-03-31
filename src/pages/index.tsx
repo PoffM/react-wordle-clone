@@ -26,7 +26,9 @@ const Home: NextPage = () => {
       `}</style>
       <Flex direction="column" h="100%">
         <WordleHeader />
-        <WordleGame />
+        <Flex as="main" flex={1} justifyContent="center">
+          <WordleGame />
+        </Flex>
       </Flex>
     </>
   );

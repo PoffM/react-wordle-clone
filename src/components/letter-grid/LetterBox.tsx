@@ -68,9 +68,12 @@ export function LetterBox({
   return (
     <AspectRatio flex={1} ratio={1}>
       <MotionBox
+        data-testid="letter-box"
+        data-background-color={bgColor}
+        data-revealed={revealed}
         animate={animation}
         border={revealed ? undefined : "2px"}
-        bg={revealed ? bgColor : undefined}
+        bg={bgColor}
         userSelect="none"
         fontWeight="bold"
         fontSize="2rem"

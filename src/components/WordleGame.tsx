@@ -1,7 +1,7 @@
 import { Box, Center, Flex, useToast } from "@chakra-ui/react";
 import { range } from "lodash";
 import { useEffect } from "react";
-import { useWordleState } from "../hooks/useWordleState";
+import { useWordleState, WordleStateParams } from "../hooks/useWordleState";
 import { KeyboardButtons } from "./KeyboardButtons";
 import { LetterGrid } from "./letter-grid/LetterGrid";
 import { PostGameButtons } from "./PostGameButtons";
@@ -9,7 +9,7 @@ import { PostGameButtons } from "./PostGameButtons";
 const ALPHABET = range(0, 26).map((i) => String.fromCharCode(i + 65));
 
 /** Holds the game state and renders the game elements. */
-export function WordleGame() {
+export function WordleGame(params: WordleStateParams) {
   const toast = useToast({
     duration: 2000,
     position: "top",
@@ -23,7 +23,7 @@ export function WordleGame() {
     submitGuess,
     continueGame,
     restart,
-  } = useWordleState();
+  } = useWordleState(params);
 
   // Show a toast if there is a guessing error:
   useEffect(() => {
@@ -53,14 +53,7 @@ export function WordleGame() {
   }, [addLetterToGuess, removeLastLetterFromGuess, submitGuess]);
 
   return (
-    <Flex
-      as="main"
-      alignSelf="center"
-      width="100%"
-      maxW="31rem"
-      flex={1}
-      flexDirection="column"
-    >
+    <Flex width="100%" maxW="31rem" height="100%" flexDirection="column">
       <Center flex={1}>
         <LetterGrid wordleState={wordleState} onRowRevealed={continueGame} />
       </Center>

@@ -30,7 +30,13 @@ export function LetterGridRow({
   }, [animation, rowError]);
 
   return (
-    <MotionHStack animate={animation} flex={1} width="100%" spacing="0.3rem">
+    <MotionHStack
+      data-testid="letter-grid-row"
+      animate={animation}
+      flex={1}
+      width="100%"
+      spacing="0.3rem"
+    >
       {columnData.map((letterBoxData, letterPosition) => {
         const isLast = letterPosition === columnData.length - 1;
 
