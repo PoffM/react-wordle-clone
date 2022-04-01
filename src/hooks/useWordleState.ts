@@ -9,7 +9,7 @@ export interface WordleState {
   submittedGuesses: string[];
   currentGuess: string;
   currentGuessError: { message: string } | null;
-  status: "PLAYING" | "WON" | "LOST" | "WAITING";
+  status: "GUESSING" | "WON" | "LOST" | "REVEALING";
 }
 
 const VALID_WORDS = [...COMMON_WORDS, ...UNCOMMON_WORDS];
@@ -62,7 +62,7 @@ export function useWordleState(params: WordleStateParams = {}) {
         state.currentGuess,
       ];
 
-      const newStatus = "WAITING";
+      const newStatus = "REVEALING";
 
       return {
         ...state,
@@ -82,7 +82,7 @@ export function useWordleState(params: WordleStateParams = {}) {
           ? "WON"
           : state.submittedGuesses.length >= state.maxGuesses
           ? "LOST"
-          : "PLAYING";
+          : "GUESSING";
 
       return { ...state, status: newStatus };
     });
@@ -95,10 +95,10 @@ export function useWordleState(params: WordleStateParams = {}) {
   return {
     wordleState,
     restart,
-    ...(wordleState.status === "WAITING" && {
+    ...(wordleState.status === "REVEALING" && {
       continueGame,
     }),
-    ...(wordleState.status === "PLAYING" && {
+    ...(wordleState.status === "GUESSING" && {
       addLetterToGuess,
       removeLastLetterFromGuess,
       submitGuess,
@@ -124,6 +124,6 @@ function makeInitialState(solutionWord?: string): WordleState {
     submittedGuesses: [] as string[],
     currentGuess: "",
     currentGuessError: null,
-    status: "PLAYING",
+    status: "GUESSING",
   };
 }

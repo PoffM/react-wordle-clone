@@ -19,7 +19,7 @@ describe("WordleGame component", () => {
   it("Plays through a game where you win.", async () => {
     const { ui, user } = renderWithContext(<WordleGame solution="HELLO" />);
 
-    // Guess 1 with all wrong letters:
+    // Guess #1 with all wrong letters:
     {
       await user.keyboard("{a}{m}{i}{s}{s}{Enter}");
       const firstRowBoxes = ui.getAllByTestId("letter-box").slice(0, 5);
@@ -45,7 +45,7 @@ describe("WordleGame component", () => {
       ]);
     }
 
-    // Guess 2 with a mix of correct and misplaced letters:
+    // Guess #2 with a mix of correct and misplaced letters:
     {
       // Guess "OLLIE" because it has a mix of different results:
       await user.keyboard("{o}{l}{l}{i}{e}{Enter}");
@@ -72,7 +72,7 @@ describe("WordleGame component", () => {
       ]);
     }
 
-    // Guess 3 with the correct word:
+    // Guess #3 with the correct word:
     {
       // // Enter the solution:
       await user.keyboard("{h}{e}{l}{l}{o}{Enter}");

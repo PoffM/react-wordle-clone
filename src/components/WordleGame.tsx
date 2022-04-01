@@ -52,6 +52,12 @@ export function WordleGame(params: WordleStateParams) {
     return () => document.removeEventListener("keydown", callGameFunction);
   }, [addLetterToGuess, removeLastLetterFromGuess, submitGuess]);
 
+  // Only reveal the new colors on the keyboard UI after the letter box colors have been revealed:
+  const revealedGuesses =
+    wordleState.status === "REVEALING"
+      ? wordleState.submittedGuesses.slice(0, -1)
+      : wordleState.submittedGuesses;
+
   return (
     <Flex width="100%" maxW="31rem" height="100%" flexDirection="column">
       <Center flex={1}>
@@ -61,10 +67,10 @@ export function WordleGame(params: WordleStateParams) {
         {(wordleState.status === "WON" || wordleState.status === "LOST") && (
           <PostGameButtons onRestartClick={restart} wordleState={wordleState} />
         )}
-        {(wordleState.status === "PLAYING" ||
-          wordleState.status === "WAITING") && (
+        {(wordleState.status === "GUESSING" ||
+          wordleState.status === "REVEALING") && (
           <KeyboardButtons
-            submittedGuesses={wordleState.submittedGuesses}
+            submittedGuesses={revealedGuesses}
             solution={wordleState.solution}
             onLetterClick={addLetterToGuess}
             onBackspaceClick={removeLastLetterFromGuess}
