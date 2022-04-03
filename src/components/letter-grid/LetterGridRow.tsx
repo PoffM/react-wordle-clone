@@ -5,9 +5,11 @@ import { LetterBox, LetterBoxData } from "./LetterBox";
 
 export interface LetterGridRowProps {
   columnData: LetterBoxData[];
-  rowError: { message: string } | null;
+  rowError?: { message: string } | null;
   isSubmitted: boolean;
   onRowRevealed?: () => void;
+  /** Renders the letter boxes with the solution color already revealed. */
+  initiallyRevealed?: boolean;
 }
 
 const MotionHStack = motion<ComponentProps<typeof HStack>>(HStack);
@@ -17,6 +19,7 @@ export function LetterGridRow({
   rowError,
   isSubmitted,
   onRowRevealed,
+  initiallyRevealed,
 }: LetterGridRowProps) {
   // Shake horizontally when there is a new error:
   const animation = useAnimation();
@@ -47,6 +50,7 @@ export function LetterGridRow({
             revealDelaySeconds={letterPosition * (1 / columnData.length)}
             onRevealed={isLast ? onRowRevealed : undefined}
             key={letterPosition}
+            initiallyRevealed={initiallyRevealed}
           />
         );
       })}

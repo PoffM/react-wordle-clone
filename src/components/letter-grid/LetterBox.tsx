@@ -3,8 +3,8 @@ import { motion, useAnimation } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export interface LetterBoxData {
-  letterIsInRightSpot: boolean;
-  letterIsInRemainingLetters: boolean;
+  letterIsInRightSpot?: boolean;
+  letterIsInRemainingLetters?: boolean;
   letter?: string;
 }
 
@@ -12,6 +12,8 @@ export interface LetterBoxProps extends LetterBoxData {
   isSubmitted: boolean;
   revealDelaySeconds?: number;
   onRevealed?: () => void;
+  /** Renders the letter box with the solution color already revealed. */
+  initiallyRevealed?: boolean;
 }
 
 const MotionBox = motion<BoxProps>(Box);
@@ -23,6 +25,7 @@ export function LetterBox({
   isSubmitted,
   revealDelaySeconds,
   onRevealed,
+  initiallyRevealed = false,
 }: LetterBoxProps) {
   const animation = useAnimation();
 
@@ -39,7 +42,7 @@ export function LetterBox({
   }, [animation, letter]);
 
   // Flip animation to reveal the answer:
-  const [revealed, setRevealed] = useState(false);
+  const [revealed, setRevealed] = useState(initiallyRevealed);
   useEffect(() => {
     void (async () => {
       if (isSubmitted && !revealed) {
