@@ -57,6 +57,18 @@ export function WordleGame(params: WordleStateParams) {
     return () => document.removeEventListener("keydown", callGameFunction);
   }, [addLetterToGuess, removeLastLetterFromGuess, submitGuess]);
 
+  // Defocus the button after clicking it,
+  useEffect(() => {
+    function blurElement() {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      document.activeElement?.blur?.();
+    }
+    document.addEventListener("click", blurElement);
+    return () => document.removeEventListener("click", blurElement);
+  }, []);
+
   // Only reveal the new colors on the keyboard UI after the letter box colors have been revealed:
   const revealedGuesses =
     wordleState.status === "REVEALING"
