@@ -70,6 +70,20 @@ describe("WordleGame component", () => {
         "usedLetter.500", // I: Not in the solution
         "misplaced.500", // E: misplaced
       ]);
+
+      // The keyboard buttons are colored correctly:
+      expect(
+        ui.getByRole("button", { name: "O" }).getAttribute("data-color-scheme")
+      ).toEqual("misplaced");
+      expect(
+        ui.getByRole("button", { name: "L" }).getAttribute("data-color-scheme")
+      ).toEqual("correct");
+      expect(
+        ui.getByRole("button", { name: "I" }).getAttribute("data-color-scheme")
+      ).toEqual("usedLetter");
+      expect(
+        ui.getByRole("button", { name: "E" }).getAttribute("data-color-scheme")
+      ).toEqual("misplaced");
     }
 
     // Guess #3 with the correct word:

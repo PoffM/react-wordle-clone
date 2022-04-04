@@ -151,6 +151,7 @@ function KeyButton(props: ComponentProps<typeof Button>) {
       height="100%"
       minW={0}
       p={0}
+      data-color-scheme={props.colorScheme}
       {...props}
       onClick={(e) => {
         props.onClick?.(e);
