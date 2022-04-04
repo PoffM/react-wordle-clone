@@ -1,5 +1,5 @@
 import { Box, Center, Flex, useToast } from "@chakra-ui/react";
-import { range } from "lodash";
+import { get, range } from "lodash";
 import { useEffect } from "react";
 import { useWordleState, WordleStateParams } from "../hooks/useWordleState";
 import { KeyboardButtons } from "./KeyboardButtons";
@@ -44,7 +44,12 @@ export function WordleGame(params: WordleStateParams) {
       if (event.key === "Backspace") {
         removeLastLetterFromGuess?.();
       }
-      if (event.key === "Enter") {
+      if (
+        event.key === "Enter" &&
+        // Don't submit the guess if the user is tabbed to a button,
+        // e.g. navigating the page keyboard-only:
+        get(event.target, "type") !== "button"
+      ) {
         submitGuess?.();
       }
     }
