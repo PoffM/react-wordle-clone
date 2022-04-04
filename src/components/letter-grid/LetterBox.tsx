@@ -37,6 +37,11 @@ export function LetterBox({
     "blackAlpha.600",
     "whiteAlpha.600"
   );
+  const absentLetterColor = useColorModeValue(
+    "usedLetter.300",
+    "usedLetter.500"
+  );
+
   const animation = useAnimation();
 
   // Pop-in animation when the letter is entered:
@@ -75,7 +80,7 @@ export function LetterBox({
       ? "correct.500"
       : letterIsInRemainingLetters
       ? "misplaced.500"
-      : "usedLetter.500"
+      : absentLetterColor
     : undefined;
 
   return (

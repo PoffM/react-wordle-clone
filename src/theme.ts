@@ -3,6 +3,9 @@ import { ChakraTheme } from "@chakra-ui/theme";
 
 /** Overrides the default Chakra theme. */
 const wordleThemeOverride: Partial<ChakraTheme> = {
+  config: {
+    initialColorMode: "system",
+  },
   styles: {
     global: (props) => ({
       body: {
