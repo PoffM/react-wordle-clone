@@ -60,10 +60,8 @@ export function WordleGame(params: WordleStateParams) {
   // Defocus the button after clicking it,
   useEffect(() => {
     function blurElement() {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      document.activeElement?.blur?.();
+      // eslint-disable-next-line
+      (document.activeElement as any)?.blur?.();
     }
     document.addEventListener("click", blurElement);
     return () => document.removeEventListener("click", blurElement);

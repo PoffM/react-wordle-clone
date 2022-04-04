@@ -1,4 +1,11 @@
-import { Box, Button, HStack, LightMode, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  LightMode,
+  useColorModeValue,
+  VStack,
+} from "@chakra-ui/react";
 import { flatMap } from "lodash";
 import { ComponentProps } from "react";
 
@@ -47,19 +54,35 @@ export function KeyboardButtons({
       .map((it) => it.letter)
   );
 
+  const usedLetterScheme = useColorModeValue(
+    "usedLetterLight",
+    "usedLetterDark"
+  );
+  const unusedLetterScheme = useColorModeValue(
+    "unusedLetterLight",
+    "unusedLetterDark"
+  );
+  const unusedLetterColor = useColorModeValue(
+    "blackAlpha.900",
+    "whiteAlpha.900"
+  );
+
+  const misplacedScheme = useColorModeValue("misplacedLight", "misplacedDark");
+
   function letterButtonProps(letter: string): LetterButtonProps {
     const colorScheme = correctLetters.has(letter)
       ? "correct"
       : misplacedLetters.has(letter)
-      ? "misplaced"
+      ? misplacedScheme
       : submittedLettersSet.has(letter)
-      ? "usedLetter"
-      : "unusedLetter";
+      ? usedLetterScheme
+      : unusedLetterScheme;
 
     return {
       letter,
       onClick: onLetterClick,
       colorScheme,
+      color: colorScheme === unusedLetterScheme ? unusedLetterColor : undefined,
     };
   }
 
@@ -81,7 +104,8 @@ export function KeyboardButtons({
         <HStack {...hStackProps}>
           <KeyButton
             flex={1.65}
-            colorScheme="unusedLetter"
+            colorScheme={unusedLetterScheme}
+            color={unusedLetterColor}
             onClick={onEnterClick}
           >
             ENTER
@@ -91,7 +115,8 @@ export function KeyboardButtons({
           ))}
           <KeyButton
             flex={1.65}
-            colorScheme="unusedLetter"
+            colorScheme={unusedLetterScheme}
+            color={unusedLetterColor}
             onClick={onBackspaceClick}
           >
             BACK
@@ -106,16 +131,23 @@ interface LetterButtonProps {
   letter: string;
   onClick?: (charCode: number) => void;
   colorScheme: string;
+  color?: string;
 }
 
 /** A letter button on the clickable keyboard. */
-function LetterButton({ letter, onClick, colorScheme }: LetterButtonProps) {
+function LetterButton({
+  letter,
+  onClick,
+  colorScheme,
+  color,
+}: LetterButtonProps) {
   return (
     <KeyButton
       key={letter}
       flex={1}
       onClick={() => onClick?.(letter.charCodeAt(0))}
       colorScheme={colorScheme}
+      color={color}
     >
       {letter}
     </KeyButton>

@@ -37,11 +37,11 @@ describe("WordleGame component", () => {
       expect(
         firstRowBoxes.map((node) => node.getAttribute("data-background-color"))
       ).toEqual([
-        "usedLetter.300",
-        "usedLetter.300",
-        "usedLetter.300",
-        "usedLetter.300",
-        "usedLetter.300",
+        "usedLetterLight.500",
+        "usedLetterLight.500",
+        "usedLetterLight.500",
+        "usedLetterLight.500",
+        "usedLetterLight.500",
       ]);
     }
 
@@ -67,7 +67,7 @@ describe("WordleGame component", () => {
         "misplaced.500", // O: misplaced
         "misplaced.500", // First L: misplaced
         "correct.500", // Second L: correct spot
-        "usedLetter.300", // I: Not in the solution
+        "usedLetterLight.500", // I: Not in the solution
         "misplaced.500", // E: misplaced
       ]);
     }
@@ -157,7 +157,7 @@ describe("WordleGame component", () => {
         "misplaced.500", // O: misplaced
         "misplaced.500", // First L: misplaced
         "correct.500", // Second L: correct spot
-        "usedLetter.300", // I: Not in the solution
+        "usedLetterLight.500", // I: Not in the solution
         "misplaced.500", // E: misplaced
       ]);
     });
