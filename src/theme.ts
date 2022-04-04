@@ -1,23 +1,38 @@
 import { extendTheme } from "@chakra-ui/react";
-import { getColor } from "@chakra-ui/theme-tools";
-import { theme as defaultTheme } from "@chakra-ui/theme";
+import { ChakraTheme } from "@chakra-ui/theme";
 
-const borderColor = getColor(defaultTheme, "whiteAlpha.400", "gray") as string;
-
-export const wordleTheme = extendTheme({
-  styles: {
-    global: {
-      body: {
-        bg: "blackAlpha.900",
-      },
-    },
+/** Overrides the default Chakra theme. */
+const wordleThemeOverride: Partial<ChakraTheme> = {
+  config: {
+    initialColorMode: "dark",
+    useSystemColorMode: false,
   },
-  borders: {
-    "1px": `1px solid ${borderColor}`,
-    "2px": `2px solid ${borderColor}`,
+  styles: {
+    global: (props) => ({
+      body: {
+        bg: props.colorMode === "dark" ? "gray.900" : "white",
+      },
+      "*, *::before, &::after": {
+        borderColor:
+          props.colorMode === "dark" ? "whiteAlpha.400" : "blackAlpha.400",
+      },
+    }),
   },
   // Color palettes generated with https://smart-swatch.netlify.app .
   colors: {
+    // Override the default blueish gray with a more pure gray color:
+    gray: {
+      50: "#f2f2f3",
+      100: "#d8d8d8",
+      200: "#bebebe",
+      300: "#a3a3a3",
+      400: "#898989",
+      500: "#707070",
+      600: "#575757",
+      700: "#3e3e3e",
+      800: "#252525",
+      900: "#0c0c0d",
+    },
     // Correct green:
     correct: {
       50: "#e8f9e8",
@@ -71,4 +86,6 @@ export const wordleTheme = extendTheme({
       900: "#150a0d",
     },
   },
-});
+};
+
+export const wordleTheme = extendTheme(wordleThemeOverride);

@@ -1,4 +1,9 @@
-import { AspectRatio, Box, BoxProps } from "@chakra-ui/react";
+import {
+  AspectRatio,
+  Box,
+  BoxProps,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -27,6 +32,11 @@ export function LetterBox({
   onRevealed,
   initiallyRevealed = false,
 }: LetterBoxProps) {
+  const textColor = useColorModeValue(undefined, "whiteAlpha.900");
+  const hasLetterBorderColor = useColorModeValue(
+    "blackAlpha.600",
+    "whiteAlpha.600"
+  );
   const animation = useAnimation();
 
   // Pop-in animation when the letter is entered:
@@ -75,8 +85,10 @@ export function LetterBox({
         data-background-color={bgColor}
         data-revealed={revealed}
         animate={animation}
-        border={revealed ? undefined : "2px"}
+        borderWidth={revealed ? undefined : "2px"}
+        borderColor={letter && hasLetterBorderColor}
         bg={bgColor}
+        color={revealed ? "whiteAlpha.900" : textColor}
         userSelect="none"
         fontWeight="bold"
         fontSize="2rem"
