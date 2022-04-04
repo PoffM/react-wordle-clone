@@ -54,35 +54,25 @@ export function KeyboardButtons({
       .map((it) => it.letter)
   );
 
-  const usedLetterScheme = useColorModeValue(
-    "usedLetterLight",
-    "usedLetterDark"
-  );
-  const unusedLetterScheme = useColorModeValue(
-    "unusedLetterLight",
-    "unusedLetterDark"
-  );
-  const unusedLetterColor = useColorModeValue(
+  const unusedLetterTextColor = useColorModeValue(
     "blackAlpha.900",
     "whiteAlpha.900"
   );
-
-  const misplacedScheme = useColorModeValue("misplacedLight", "misplacedDark");
 
   function letterButtonProps(letter: string): LetterButtonProps {
     const colorScheme = correctLetters.has(letter)
       ? "correct"
       : misplacedLetters.has(letter)
-      ? misplacedScheme
+      ? "misplaced"
       : submittedLettersSet.has(letter)
-      ? usedLetterScheme
-      : unusedLetterScheme;
+      ? "usedLetter"
+      : "unusedLetter";
 
     return {
       letter,
       onClick: onLetterClick,
       colorScheme,
-      color: colorScheme === unusedLetterScheme ? unusedLetterColor : undefined,
+      color: colorScheme === "unusedLetter" ? unusedLetterTextColor : undefined,
     };
   }
 
@@ -104,8 +94,8 @@ export function KeyboardButtons({
         <HStack {...hStackProps}>
           <KeyButton
             flex={1.65}
-            colorScheme={unusedLetterScheme}
-            color={unusedLetterColor}
+            colorScheme="unusedLetter"
+            color={unusedLetterTextColor}
             onClick={onEnterClick}
           >
             ENTER
@@ -115,8 +105,8 @@ export function KeyboardButtons({
           ))}
           <KeyButton
             flex={1.65}
-            colorScheme={unusedLetterScheme}
-            color={unusedLetterColor}
+            colorScheme="unusedLetter"
+            color={unusedLetterTextColor}
             onClick={onBackspaceClick}
           >
             BACK

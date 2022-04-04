@@ -1,6 +1,6 @@
-import { extendTheme } from "@chakra-ui/react";
+import { ColorMode, extendTheme } from "@chakra-ui/react";
 import { ChakraTheme } from "@chakra-ui/theme";
-import { skewColor } from "./theme-utils";
+import { shadeColor } from "./theme-utils";
 
 const gray = {
   50: "#f2f2f3",
@@ -15,62 +15,65 @@ const gray = {
   900: "#0c0c0d",
 };
 
-const misplaced = {
-  50: "#fcf6e1",
-  100: "#ede5c0",
-  200: "#e0d49c",
-  300: "#d3c377",
-  400: "#c7b252",
-  500: "#ad9838",
-  600: "#87762a",
-  700: "#60541c",
-  800: "#3a330e",
-  900: "#151100",
-};
-
 /** Overrides the default Chakra theme. */
-const wordleThemeOverride: Partial<ChakraTheme> = {
-  config: {
-    initialColorMode: "system",
-  },
-  styles: {
-    global: (props) => ({
-      body: {
-        bg: props.colorMode === "dark" ? "gray.900" : "white",
-      },
-      "*, *::before, &::after": {
-        borderColor:
-          props.colorMode === "dark" ? "whiteAlpha.400" : "blackAlpha.400",
-      },
-    }),
-  },
-  // Color palettes generated with https://smart-swatch.netlify.app .
-  colors: {
-    // Override the default blueish gray with a more pure gray color:
-    gray,
-    // Correct green:
-    correct: {
-      50: "#e8f9e8",
-      100: "#cce5cb",
-      200: "#aed3ab",
-      300: "#8fbf8b",
-      400: "#70ad6b",
-      500: "#579452",
-      600: "#43733f",
-      700: "#2e522b",
-      800: "#1a3218",
-      900: "#021200",
+export function wordleTheme(colorMode: ColorMode) {
+  const overrides: Partial<ChakraTheme> = {
+    config: {
+      initialColorMode: "system",
     },
-    // Misplaced yellow:
-    misplacedLight: skewColor(misplaced, -1),
-    misplacedDark: misplaced,
-    // Mid-Gray for unused letters:
-    unusedLetterDark: gray,
-    unusedLetterLight: skewColor(gray, -4),
-    // Dark gray for used letters:
-    usedLetterLight: gray,
-    usedLetterDark: skewColor(gray, 2),
-  },
-};
+    styles: {
+      global: {
+        body: {
+          bg: colorMode === "dark" ? "gray.900" : "white",
+        },
+        "*, *::before, &::after": {
+          borderColor:
+            colorMode === "dark" ? "whiteAlpha.400" : "blackAlpha.400",
+        },
+      },
+    },
+    // Color palettes generated with https://smart-swatch.netlify.app .
+    colors: {
+      // Override the default blueish gray with a more pure gray color:
+      gray,
+      // Correct green:
+      correct: shadeColor(
+        {
+          50: "#e8f9e8",
+          100: "#cce5cb",
+          200: "#aed3ab",
+          300: "#8fbf8b",
+          400: "#70ad6b",
+          500: "#579452",
+          600: "#43733f",
+          700: "#2e522b",
+          800: "#1a3218",
+          900: "#021200",
+        },
+        colorMode === "light" ? -1 : 0
+      ),
+      // Misplaced yellow:
+      misplaced: shadeColor(
+        {
+          50: "#fcf6e1",
+          100: "#ede5c0",
+          200: "#e0d49c",
+          300: "#d3c277",
+          400: "#c7b152",
+          500: "#ad9838",
+          600: "#87762a",
+          700: "#60541c",
+          800: "#3a330e",
+          900: "#151100",
+        },
+        colorMode === "light" ? -1 : 0
+      ),
+      // Mid-Gray for unused letters:
+      unusedLetter: shadeColor(gray, colorMode === "light" ? -4 : -1),
+      // Dark gray for used letters:
+      usedLetter: shadeColor(gray, colorMode === "dark" ? 2 : 0),
+    },
+  };
 
-export const wordleTheme = extendTheme(wordleThemeOverride);
+  return extendTheme(overrides);
+}

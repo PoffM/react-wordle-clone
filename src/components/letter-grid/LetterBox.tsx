@@ -37,14 +37,6 @@ export function LetterBox({
     "blackAlpha.600",
     "whiteAlpha.600"
   );
-  const absentLetterColor = useColorModeValue(
-    "usedLetterLight.500",
-    "usedLetterDark.500"
-  );
-  const misplacedColor = useColorModeValue(
-    "misplacedLight.500",
-    "misplacedDark.500"
-  );
 
   const animation = useAnimation();
 
@@ -83,8 +75,8 @@ export function LetterBox({
     ? letterIsInRightSpot
       ? "correct.500"
       : letterIsInRemainingLetters
-      ? misplacedColor
-      : absentLetterColor
+      ? "misplaced.500"
+      : "usedLetter.500"
     : undefined;
 
   return (

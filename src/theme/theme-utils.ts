@@ -1,11 +1,11 @@
-import { toPairs, keys, clamp, fromPairs } from "lodash";
+import { clamp, fromPairs, keys, toPairs } from "lodash";
 
 /**
  * Shifts the values in a shaded color palette.
  * e.g. calling skewColor(gray, 2) returns a darkened palette.
  * e.g. calling skewColor(gray, -2) returns a lightened palette.
  */
-export function skewColor(
+export function shadeColor(
   color: Record<string, string>,
   skewVal: number
 ): Record<string, string> {

@@ -1,13 +1,21 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
-import { wordleTheme } from "../theme/theme";
+import { PropsWithChildren } from "react";
+import { WordleThemeProvider } from "../theme/WordleThemeProvider";
 
-function MyApp({ Component, pageProps }: AppProps) {
+/** Wrapper with all context providers. */
+export function AppWrapper({ children }: PropsWithChildren<unknown>) {
   return (
-    <ChakraProvider theme={wordleTheme}>
-      <Component {...pageProps} />
+    <ChakraProvider>
+      <WordleThemeProvider>{children}</WordleThemeProvider>
     </ChakraProvider>
   );
 }
 
-export default MyApp;
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <AppWrapper>
+      <Component {...pageProps} />
+    </AppWrapper>
+  );
+}
