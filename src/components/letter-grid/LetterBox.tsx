@@ -62,11 +62,11 @@ export function LetterBox({
           transition: { delay: revealDelaySeconds, duration: 0.2 },
         });
         setRevealed(true);
+        onRevealed?.();
         await animation.start({
           rotateX: [-90, 0],
           transition: { duration: 0.2 },
         });
-        onRevealed?.();
       }
     })();
   }, [animation, isSubmitted, revealed, revealDelaySeconds, onRevealed]);
