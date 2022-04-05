@@ -10,7 +10,7 @@ import {
 import { WordleInfoModal } from "./WordleInfoModal";
 
 export function WordleHeader() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const infoModal = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
 
   const helpLabel = "Help";
@@ -22,7 +22,7 @@ export function WordleHeader() {
     <Flex alignItems="center" h="3rem" borderBottomWidth="1px" px={3}>
       <Flex flex={1} align="center">
         <IconButton
-          onClick={onOpen}
+          onClick={infoModal.onOpen}
           aria-label={helpLabel}
           title={helpLabel}
           icon={<QuestionOutlineIcon w={6} h={6} />}
@@ -39,7 +39,7 @@ export function WordleHeader() {
           icon={colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
         />
       </Flex>
-      <WordleInfoModal isOpen={isOpen} onClose={onClose} />
+      <WordleInfoModal isOpen={infoModal.isOpen} onClose={infoModal.onClose} />
     </Flex>
   );
 }

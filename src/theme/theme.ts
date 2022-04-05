@@ -32,6 +32,15 @@ export function wordleTheme(colorMode: ColorMode) {
         },
       },
     },
+    components: {
+      Modal: {
+        baseStyle: {
+          dialog: {
+            backgroundColor: colorMode === "dark" ? "gray.800" : undefined,
+          },
+        },
+      },
+    },
     // Color palettes generated with https://smart-swatch.netlify.app .
     colors: {
       // Override the default blueish gray with a more pure gray color:

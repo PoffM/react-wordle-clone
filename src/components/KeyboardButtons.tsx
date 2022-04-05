@@ -133,7 +133,6 @@ function LetterButton({
 }: LetterButtonProps) {
   return (
     <KeyButton
-      key={letter}
       flex={1}
       onClick={() => onClick?.(letter.charCodeAt(0))}
       colorScheme={colorScheme}
