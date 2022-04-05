@@ -7,11 +7,18 @@ import {
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { WordleInfoModal } from "./WordleInfoModal";
 
 export function WordleHeader() {
   const infoModal = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
+
+  // When the modal closes, blur the info button:
+  useEffect(() => {
+    // eslint-disable-next-line
+    (document.activeElement as any)?.blur?.();
+  }, [infoModal.isOpen]);
 
   const helpLabel = "Help";
   const colorModeLabel = `Switch to ${
