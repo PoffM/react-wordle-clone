@@ -1,6 +1,6 @@
 import { ColorMode, extendTheme } from "@chakra-ui/react";
 import { ChakraTheme } from "@chakra-ui/theme";
-import { shadeColor } from "./theme-utils";
+import { shadeColor } from "./shade-color";
 
 const gray = {
   50: "#f2f2f3",
