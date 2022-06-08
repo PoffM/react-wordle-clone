@@ -1,10 +1,12 @@
 import { HStack } from "@chakra-ui/react";
 import { motion, useAnimation } from "framer-motion";
+import { range } from "lodash";
 import { ComponentProps, useEffect } from "react";
-import { LetterBox, LetterBoxData } from "./LetterBox";
+import { LetterBox } from "./LetterBox";
 
 export interface LetterGridRowProps {
-  columnData: LetterBoxData[];
+  rowGuess?: string;
+  solution: string;
   rowError?: { message: string } | null;
   isSubmitted: boolean;
   onRowRevealed?: () => void;
@@ -15,10 +17,11 @@ export interface LetterGridRowProps {
 const MotionHStack = motion<ComponentProps<typeof HStack>>(HStack);
 
 export function LetterGridRow({
-  columnData,
-  rowError,
   isSubmitted,
+  solution,
   onRowRevealed,
+  rowError,
+  rowGuess,
   initiallyRevealed,
 }: LetterGridRowProps) {
   // Shake horizontally when there is a new error:
@@ -31,6 +34,22 @@ export function LetterGridRow({
       });
     }
   }, [animation, rowError]);
+
+  const remainingLetters = range(0, solution.length)
+    .filter((idx) => rowGuess?.[idx] !== solution[idx])
+    .map((idx) => solution[idx]);
+
+  const columnData = range(0, solution.length).map((colNum) => {
+    const letter = rowGuess?.charAt(colNum);
+    const letterIsInRemainingLetters = Boolean(
+      letter && remainingLetters.includes(letter)
+    );
+    const letterIsInRightSpot = Boolean(
+      letter && solution.charAt(colNum) === letter
+    );
+
+    return { letter, letterIsInRightSpot, letterIsInRemainingLetters };
+  });
 
   return (
     <MotionHStack
