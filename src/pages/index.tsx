@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { WordleGame } from "../components/WordleGame";
@@ -6,19 +6,13 @@ import { WordleHeader } from "../components/WordleHeader";
 
 const Home: NextPage = () => {
   return (
-    <>
+    <Box height="calc(100vh - env(safe-area-inset-bottom))">
       <Head>
         <title>React Wordle Clone</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* CSS hacks to get the vertical layout to work. */}
       <style>{`
-        html, body, #__next {
-          height: 100%;
-          margin: 0;
-        }
-
         /* Move the toasts (notifications) down so they don't cover the header. */
         #chakra-toast-manager-top {
           top: 10% !important;
@@ -30,7 +24,7 @@ const Home: NextPage = () => {
           <WordleGame />
         </Flex>
       </Flex>
-    </>
+    </Box>
   );
 };
 
