@@ -33,7 +33,9 @@ export function WordleGame(params: WordleStateParams) {
         status: "warning",
       });
     }
-  }, [wordleState.currentGuessError, toast]);
+    // Don't put 'toast' as a dependency because its identity changes on every render:
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wordleState.currentGuessError]);
 
   // Key presses change the game state:
   useEffect(() => {
