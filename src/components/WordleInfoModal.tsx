@@ -56,7 +56,7 @@ export function WordleInfoModal({
                 <Box w="15rem" mb={1}>
                   <LetterGridRow
                     rowGuess="PILLS"
-                    solution="XIXXX"
+                    solution="XXIXX"
                     isSubmitted={true}
                     initiallyRevealed={true}
                   />
