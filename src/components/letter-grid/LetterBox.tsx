@@ -46,7 +46,7 @@ export function LetterBox({
       if (letter) {
         await animation.start({
           scale: [0.8, 1.1, 1],
-          transition: { times: [0, 0.4, 1], duration: 0.1 },
+          transition: { times: [0, 0.4, 1], duration: 0.15 },
         });
       }
     })();
@@ -59,7 +59,7 @@ export function LetterBox({
       if (isSubmitted && !revealed) {
         await animation.start({
           rotateX: [0, -90],
-          transition: { delay: revealDelaySeconds, duration: 0.25 },
+          transition: { delay: revealDelaySeconds, duration: 0.2 },
         });
         setRevealed(true);
         onRevealed?.();
