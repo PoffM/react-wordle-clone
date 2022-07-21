@@ -16,7 +16,7 @@ export function LetterGrid({ wordleState, onRowRevealed }: LetterGridProps) {
       spacing="0.3rem"
       margin="0.3rem"
       // Any component state should be lost when the solution is changed (e.g. for a new game):
-      key={wordleState.solution}
+      key={wordleState.playId}
     >
       {range(0, wordleState.maxGuesses).map((rowNum) => {
         const isCurrentGuess = rowNum === wordleState.submittedGuesses.length;
